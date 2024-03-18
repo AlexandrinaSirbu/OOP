@@ -1,4 +1,6 @@
 #pragma once
+
+#include <initializer_list>
 class Sort
 {
     int* array;
@@ -8,7 +10,7 @@ public:
     Sort(int* array, int NumberOfElements);
     Sort(int count, ...);
     Sort(char* string);
-    Sort();
+    Sort(std::initializer_list<int> initList);
 
     void InsertSort(bool ascendent = false);
     void QuickSort(bool ascendent = false);

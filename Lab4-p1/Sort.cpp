@@ -61,10 +61,17 @@ Sort::Sort(char* string)
     this->NumberOfElements = n - 1;
 }
 
-Sort::Sort() : array(new int[6] { 1, 2, 3, 4, 5, 6 })
+Sort::Sort(std::initializer_list<int> initList) : NumberOfElements(initList.size())
 {
-    this->NumberOfElements = 6;
+    this->array = new int[NumberOfElements];
+    int i = 0;
+    for (auto it = initList.begin(); it != initList.end(); ++it)
+    {
+        this->array[i++] = *it;
+    }
 }
+
+
 
 void Sort::InsertSort(bool ascendent)
 {
@@ -72,7 +79,8 @@ void Sort::InsertSort(bool ascendent)
     {
         int key = array[step];
         int j = step - 1;
-        while (key < array[j] && j >= 0)
+        // Adjust the condition based on the boolean argument
+        while ((ascendent && key < array[j]) || (!ascendent && key > array[j]) && j >= 0)
         {
             array[j + 1] = array[j];
             --j;
@@ -88,13 +96,13 @@ void swap(int* a, int* b)
     *b = t;
 }
 
-int partition(int arr[], int low, int high)
+int partition(int arr[], int low, int high, bool ascendent)
 {
     int pivot = arr[high];
     int i = (low - 1);
     for (int j = low; j <= high - 1; j++)
     {
-        if (arr[j] < pivot)
+        if ((ascendent && arr[j] < pivot) || (!ascendent && arr[j] > pivot))
         {
             i++;
             swap(&arr[i], &arr[j]);
@@ -104,19 +112,20 @@ int partition(int arr[], int low, int high)
     return (i + 1);
 }
 
-void quickSort(int arr[], int low, int high)
+
+void quickSort(int arr[], int low, int high, bool ascendent)
 {
     if (low < high)
     {
-        int pi = partition(arr, low, high);
-        quickSort(arr, low, pi - 1);
-        quickSort(arr, pi + 1, high);
+        int pi = partition(arr, low, high, ascendent);
+        quickSort(arr, low, pi - 1, ascendent);
+        quickSort(arr, pi + 1, high, ascendent);
     }
 }
 
 void Sort::QuickSort(bool ascendent)
 {
-    quickSort(this->array, 0, this->NumberOfElements - 1);
+    quickSort(this->array, 0, this->NumberOfElements - 1, ascendent);
 }
 
 void Sort::BubbleSort(bool ascendent)
@@ -124,7 +133,8 @@ void Sort::BubbleSort(bool ascendent)
     int i, j;
     for (i = 0; i < this->NumberOfElements - 1; i++)
         for (j = 0; j < this->NumberOfElements - i - 1; j++)
-            if (array[j] > array[j + 1])
+            // Adjust the condition based on the boolean argument
+            if ((ascendent && array[j] > array[j + 1]) || (!ascendent && array[j] < array[j + 1]))
                 swap(&array[j], &array[j + 1]);
 }
 

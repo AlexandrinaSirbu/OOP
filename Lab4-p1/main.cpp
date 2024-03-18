@@ -11,7 +11,7 @@ int main() {
 
 	int v[5] = { 4, 2, 7, 1, 5 };
 	Sort c2(v, 5); //array + nr of elements
-	c2.BubbleSort();
+	c2.BubbleSort(false);
 	c2.Print();
 
 	Sort c3(6, 10, 9, 8, 7, 5, 6); //va_list
@@ -20,11 +20,15 @@ int main() {
 
 	char c[] = "112,34,56,178";
 	Sort c4(c);  //string
-	c4.QuickSort();
+	c4.QuickSort(true);
+	c4.Print();
+	c4.QuickSort(false);
 	c4.Print();
 
-	Sort c5;  //initialization list
+	Sort c5 = { 1, 2, 3, 4, 5, 6 };  //initialization list
 	c5.Print();
+
+
 
 	return 0;
 }
